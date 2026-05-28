@@ -1,7 +1,7 @@
 const puzzleContainer = document.getElementById("puzzle");
 const controlsContainer = document.getElementById("controls");
 
-let board = [
+let newBoard = [
   [".", "9", ".", ".", "4", "2", "1", "3", "6"],
   [".", ".", ".", "9", "6", ".", "4", "8", "5"],
   [".", ".", ".", "5", "8", "1", ".", ".", "."],
@@ -41,7 +41,7 @@ function puzzleSolver(board) {
       }
     }
   }
-  return true;
+  return board;
 }
 
 function setBoard(board) {
@@ -49,6 +49,7 @@ function setBoard(board) {
     for (j = 0; j < 9; j++) {
       const cell = puzzleContainer.appendChild(document.createElement("div"));
       cell.classList.add("cell");
+      cell.setAttribute("id", `${i}-${j}`);
       if (board[i][j] !== ".") {
         cell.innerText = board[i][j];
       }
@@ -70,7 +71,7 @@ function setBoard(board) {
   }
 }
 
-setBoard(board);
+setBoard(newBoard);
 
 window.addEventListener("click", (e) => {
   if (e.target.className === "number") {
@@ -87,3 +88,10 @@ window.addEventListener("click", (e) => {
     e.target.innerText = selectedNumber;
   }
 });
+
+console.log(document.getElementById("0-1").innerText);
+// for (i = 0; i < 9; i++) {
+//   for (j = 0; j < 9; j++) {
+
+//   }
+// }
