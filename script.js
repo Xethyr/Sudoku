@@ -1,4 +1,5 @@
 const puzzleContainer = document.getElementById("puzzle");
+const controlsContainer = document.getElementById("controls");
 
 let board = [
   [".", "9", ".", ".", "4", "2", "1", "3", "6"],
@@ -43,7 +44,46 @@ function puzzleSolver(board) {
   return true;
 }
 
-for (i = 0; i < 81; i++) {
-  const cell = puzzleContainer.appendChild(document.createElement("div"));
-  cell.classList.add("cell");
+function setBoard(board) {
+  for (i = 0; i < 9; i++) {
+    for (j = 0; j < 9; j++) {
+      const cell = puzzleContainer.appendChild(document.createElement("div"));
+      cell.classList.add("cell");
+      if (board[i][j] !== ".") {
+        cell.innerText = board[i][j];
+      }
+      if (j === 2 || j === 5) {
+        cell.classList.add("vertical-border");
+      }
+      if (i === 2 || i === 5) {
+        cell.classList.add("horizontal-border");
+      }
+    }
+  }
+  for (i = 1; i < 10; i++) {
+    const numberButton = controlsContainer.appendChild(
+      document.createElement("div"),
+    );
+    numberButton.classList.add("number");
+    numberButton.setAttribute("id", `${i}`);
+    numberButton.innerText = `${i}`;
+  }
 }
+
+setBoard(board);
+
+window.addEventListener("click", (e) => {
+  if (e.target.className === "number") {
+    const numberButtons = document.querySelectorAll(".number");
+    numberButtons.forEach((button) => {
+      button.classList.remove("selected");
+    });
+    const numberSelection = document.getElementById(`${e.target.id}`);
+    numberSelection.classList.add("selected");
+  }
+  if (e.target.className === "cell" && e.target.innerText === "") {
+    const selectedNumberBox = document.querySelector(".selected");
+    const selectedNumber = selectedNumberBox.getAttribute("id");
+    e.target.innerText = selectedNumber;
+  }
+});
