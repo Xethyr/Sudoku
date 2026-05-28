@@ -20,17 +20,17 @@ function checkGuess(board, row, column, k) {
   return true;
 }
 
-function sudokuSolver(data) {
-  for (let i = 0; i < 9; i++) {
-    for (let j = 0; j < 9; j++) {
-      if (data[i][j] == ".") {
-        for (let k = 1; k <= 9; k++) {
-          if (checkGuess(data, i, j, k)) {
-            data[i][j] = `${k}`;
-            if (sudokuSolver(data)) {
+function puzzleSolver(board) {
+  for (i = 0; i < 9; i++) {
+    for (j = 0; j < 9; j++) {
+      if (board[i][j] === ".") {
+        for (k = 1; k < 10; k++) {
+          if (checkGuess(board, i, j, k)) {
+            board[i][j] = `${k}`;
+            if (puzzleSolver(board)) {
               return true;
             } else {
-              data[i][j] = ".";
+              board[i][j] = ".";
             }
           }
         }
@@ -40,5 +40,5 @@ function sudokuSolver(data) {
   }
   return true;
 }
-console.log(sudokuSolver(board));
-console.log(board);
+
+console.log(puzzleSolver(board), board);
