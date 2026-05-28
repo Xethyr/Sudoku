@@ -1,3 +1,5 @@
+const puzzleContainer = document.getElementById("puzzle");
+
 let board = [
   [".", "9", ".", ".", "4", "2", "1", "3", "6"],
   [".", ".", ".", "9", "6", ".", "4", "8", "5"],
@@ -41,4 +43,7 @@ function puzzleSolver(board) {
   return true;
 }
 
-console.log(puzzleSolver(board), board);
+for (i = 0; i < 81; i++) {
+  const cell = puzzleContainer.appendChild(document.createElement("div"));
+  cell.classList.add("cell");
+}
