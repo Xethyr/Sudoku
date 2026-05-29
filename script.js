@@ -1,5 +1,6 @@
 const puzzleContainer = document.getElementById("puzzle");
 const controlsContainer = document.getElementById("controls");
+let errorCount = 0;
 
 let newBoard = [
   [".", "9", ".", ".", "4", "2", "1", "3", "6"],
@@ -12,11 +13,14 @@ let newBoard = [
   ["7", ".", "6", ".", ".", ".", "8", "1", "."],
   ["3", ".", ".", ".", "9", ".", ".", ".", "."],
 ];
+
+let solvedBoard = newBoard;
+
 function checkGuess(board, row, column, k) {
   for (let i = 0; i < 9; i++) {
     const m = 3 * Math.floor(row / 3) + Math.floor(i / 3);
     const n = 3 * Math.floor(column / 3) + (i % 3);
-    if (board[i][column] === k || board[row][i] === k || board[m][n] === k) {
+    if (board[i][column] == k || board[row][i] == k || board[m][n] == k) {
       return false;
     }
   }
@@ -24,10 +28,10 @@ function checkGuess(board, row, column, k) {
 }
 
 function puzzleSolver(board) {
-  for (i = 0; i < 9; i++) {
-    for (j = 0; j < 9; j++) {
-      if (board[i][j] === ".") {
-        for (k = 1; k < 10; k++) {
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      if (board[i][j] == ".") {
+        for (let k = 1; k <= 9; k++) {
           if (checkGuess(board, i, j, k)) {
             board[i][j] = `${k}`;
             if (puzzleSolver(board)) {
@@ -41,12 +45,12 @@ function puzzleSolver(board) {
       }
     }
   }
-  return board;
+  return true;
 }
 
 function setBoard(board) {
-  for (i = 0; i < 9; i++) {
-    for (j = 0; j < 9; j++) {
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
       const cell = puzzleContainer.appendChild(document.createElement("div"));
       cell.classList.add("cell");
       cell.setAttribute("id", `${i}-${j}`);
@@ -61,7 +65,7 @@ function setBoard(board) {
       }
     }
   }
-  for (i = 1; i < 10; i++) {
+  for (let i = 1; i < 10; i++) {
     const numberButton = controlsContainer.appendChild(
       document.createElement("div"),
     );
@@ -72,6 +76,19 @@ function setBoard(board) {
 }
 
 setBoard(newBoard);
+puzzleSolver(solvedBoard);
+
+function compareToSolution() {
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      if (
+        document.getElementById(`${i}-${j}`).innerText !== solvedBoard[i][j]
+      ) {
+        document.getElementById(`${i}-${j}`).innerText = "";
+      }
+    }
+  }
+}
 
 window.addEventListener("click", (e) => {
   if (e.target.className === "number") {
@@ -82,16 +99,11 @@ window.addEventListener("click", (e) => {
     const numberSelection = document.getElementById(`${e.target.id}`);
     numberSelection.classList.add("selected");
   }
-  if (e.target.className === "cell" && e.target.innerText === "") {
+  if (e.target.classList.contains("cell") && e.target.innerText === "") {
     const selectedNumberBox = document.querySelector(".selected");
     const selectedNumber = selectedNumberBox.getAttribute("id");
     e.target.innerText = selectedNumber;
+    compareToSolution();
   }
 });
-
-console.log(document.getElementById("0-1").innerText);
-// for (i = 0; i < 9; i++) {
-//   for (j = 0; j < 9; j++) {
-
-//   }
-// }
+console.log(solvedBoard);
