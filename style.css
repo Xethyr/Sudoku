@@ -47,3 +47,6 @@ body {
 .horizontal-border {
     border-bottom: 2px solid orange;
 }
+#buttons {
+    margin-top: 10px;
+}

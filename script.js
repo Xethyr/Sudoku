@@ -2,6 +2,18 @@ const puzzleContainer = document.getElementById("puzzle");
 const controlsContainer = document.getElementById("controls");
 let errorCount = 0;
 const errorText = document.getElementById("errors");
+let blankBoard = [
+  [".", ".", ".", ".", ".", ".", ".", ".", "."],
+  [".", ".", ".", ".", ".", ".", ".", ".", "."],
+  [".", ".", ".", ".", ".", ".", ".", ".", "."],
+  [".", ".", ".", ".", ".", ".", ".", ".", "."],
+  [".", ".", ".", ".", ".", ".", ".", ".", "."],
+  [".", ".", ".", ".", ".", ".", ".", ".", "."],
+  [".", ".", ".", ".", ".", ".", ".", ".", "."],
+  [".", ".", ".", ".", ".", ".", ".", ".", "."],
+  [".", ".", ".", ".", ".", ".", ".", ".", "."],
+];
+let newNewBoard = blankBoard;
 
 let newBoard = [
   [".", "9", ".", ".", "4", "2", "1", "3", "6"],
@@ -98,7 +110,6 @@ function compareGuess(e) {
   if (e.target.innerText !== solvedBoard[row][col]) {
     e.target.innerText = "";
     errorCount += 1;
-    console.log(errorCount);
     errorText.innerText = "Error Count: " + errorCount;
   }
 }
@@ -119,3 +130,10 @@ window.addEventListener("click", (e) => {
     compareGuess(e);
   }
 });
+
+function genRandomBoard() {
+  const ranInt = Math.floor(Math.random()) * 10;
+  for (let i = 0; i <= 9; i++) {
+    for (let j = 0; j <= 9; j++) {}
+  }
+}
