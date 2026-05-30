@@ -1,6 +1,7 @@
 const puzzleContainer = document.getElementById("puzzle");
 const controlsContainer = document.getElementById("controls");
 let errorCount = 0;
+const errorText = document.getElementById("errors");
 
 let newBoard = [
   [".", "9", ".", ".", "4", "2", "1", "3", "6"],
@@ -90,6 +91,18 @@ function compareToSolution() {
   }
 }
 
+function compareGuess(e) {
+  const guessPosition = e.target.id.split("-");
+  const row = parseInt(guessPosition[0]);
+  const col = parseInt(guessPosition[1]);
+  if (e.target.innerText !== solvedBoard[row][col]) {
+    e.target.innerText = "";
+    errorCount += 1;
+    console.log(errorCount);
+    errorText.innerText = "Error Count: " + errorCount;
+  }
+}
+
 window.addEventListener("click", (e) => {
   if (e.target.className === "number") {
     const numberButtons = document.querySelectorAll(".number");
@@ -103,7 +116,6 @@ window.addEventListener("click", (e) => {
     const selectedNumberBox = document.querySelector(".selected");
     const selectedNumber = selectedNumberBox.getAttribute("id");
     e.target.innerText = selectedNumber;
-    compareToSolution();
+    compareGuess(e);
   }
 });
-console.log(solvedBoard);
