@@ -102,18 +102,6 @@ function setBoard(board) {
 setBoard(newBoard);
 puzzleSolver(solvedBoard);
 
-function compareToSolution() {
-  for (let i = 0; i < 9; i++) {
-    for (let j = 0; j < 9; j++) {
-      if (
-        document.getElementById(`${i}-${j}`).innerText !== solvedBoard[i][j]
-      ) {
-        document.getElementById(`${i}-${j}`).innerText = "";
-      }
-    }
-  }
-}
-
 function compareBoards(arrA, arrB) {
   if (arrA.length !== arrB.length) {
     return false;
