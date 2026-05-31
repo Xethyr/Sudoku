@@ -202,3 +202,13 @@ clearBoardBtn.addEventListener("click", () => {
   setBoard(blankBoard);
   solvedBoard = cloneBoard(blankBoard);
 });
+
+function solveUserBoard() {
+  let userBoard = cloneBoard(blankBoard);
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      userBoard[i][j] = document.getElementById(`${i}-${j}`).innerText;
+    }
+  }
+  return userBoard;
+}
