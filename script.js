@@ -4,6 +4,8 @@ let errorCount = 0;
 const errorText = document.getElementById("errors");
 const newPuzzleBtn = document.getElementById("new-puzzle");
 const solvePuzzleBtn = document.getElementById("solve-puzzle");
+const clearBoardBtn = document.getElementById("clear-board");
+
 const blankBoard = [
   [".", ".", ".", ".", ".", ".", ".", ".", "."],
   [".", ".", ".", ".", ".", ".", ".", ".", "."],
@@ -112,6 +114,13 @@ function compareToSolution() {
   }
 }
 
+function compareBoards(arr1, arr2) {
+  return (
+    arr1.length === arr2.length &&
+    arr1.every((val, index) => val === arr2[index])
+  );
+}
+
 function compareGuess(e) {
   const guessPosition = e.target.id.split("-");
   const row = parseInt(guessPosition[0]);
@@ -136,14 +145,16 @@ window.addEventListener("click", (e) => {
     const selectedNumberBox = document.querySelector(".selected");
     const selectedNumber = selectedNumberBox.getAttribute("id");
     e.target.innerText = selectedNumber;
-    compareGuess(e);
+    if (compareBoards(solvedBoard, blankBoard)) {
+      compareGuess(e);
+    }
   }
 });
 
 function genRandomBoard() {
   newNewBoard = cloneBoard(blankBoard);
 
-  // Seed with 11 random, valid numbers to guarantee variety and a high solvability rate
+  // Seed with 25 random, valid numbers to guarantee variety and a high solvability rate
   let placed = 0;
   while (placed < 25) {
     const row = Math.floor(Math.random() * 9);
@@ -192,4 +203,10 @@ newPuzzleBtn.addEventListener("click", setNewBoard);
 
 solvePuzzleBtn.addEventListener("click", () => {
   setBoard(solvedBoard);
+});
+
+clearBoardBtn.addEventListener("click", () => {
+  setBoard(blankBoard);
+  solvedBoard = cloneBoard(blankBoard);
+  console.log(compareBoards(solvedBoard, blankBoard));
 });
