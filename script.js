@@ -145,9 +145,7 @@ window.addEventListener("click", (e) => {
     const selectedNumberBox = document.querySelector(".selected");
     const selectedNumber = selectedNumberBox.getAttribute("id");
     e.target.innerText = selectedNumber;
-    if (compareBoards(solvedBoard, blankBoard)) {
-      compareGuess(e);
-    }
+    compareGuess(e);
   }
 });
 
@@ -168,8 +166,6 @@ function genRandomBoard() {
       }
     }
   }
-
-  console.log(newNewBoard);
   if (puzzleSolver(newNewBoard)) {
     console.log("solvable");
     return true;
@@ -208,5 +204,5 @@ solvePuzzleBtn.addEventListener("click", () => {
 clearBoardBtn.addEventListener("click", () => {
   setBoard(blankBoard);
   solvedBoard = cloneBoard(blankBoard);
-  console.log(compareBoards(solvedBoard, blankBoard));
+  console.log(compareBoards(blankBoard, solvedBoard));
 });
