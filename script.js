@@ -2,7 +2,9 @@ const puzzleContainer = document.getElementById("puzzle");
 const controlsContainer = document.getElementById("controls");
 let errorCount = 0;
 const errorText = document.getElementById("errors");
-let blankBoard = [
+const newPuzzleBtn = document.getElementById("new-puzzle");
+const solvePuzzleBtn = document.getElementById("solve-puzzle");
+const blankBoard = [
   [".", ".", ".", ".", ".", ".", ".", ".", "."],
   [".", ".", ".", ".", ".", ".", ".", ".", "."],
   [".", ".", ".", ".", ".", ".", ".", ".", "."],
@@ -13,7 +15,12 @@ let blankBoard = [
   [".", ".", ".", ".", ".", ".", ".", ".", "."],
   [".", ".", ".", ".", ".", ".", ".", ".", "."],
 ];
-let newNewBoard = blankBoard;
+
+function cloneBoard(board) {
+  return board.map((row) => [...row]);
+}
+
+let newNewBoard = cloneBoard(blankBoard);
 
 let newBoard = [
   [".", "9", ".", ".", "4", "2", "1", "3", "6"],
@@ -27,7 +34,7 @@ let newBoard = [
   ["3", ".", ".", ".", "9", ".", ".", ".", "."],
 ];
 
-let solvedBoard = newBoard;
+let solvedBoard = cloneBoard(newBoard);
 
 function checkGuess(board, row, column, k) {
   for (let i = 0; i < 9; i++) {
@@ -62,6 +69,8 @@ function puzzleSolver(board) {
 }
 
 function setBoard(board) {
+  puzzleContainer.replaceChildren();
+  controlsContainer.replaceChildren();
   for (let i = 0; i < 9; i++) {
     for (let j = 0; j < 9; j++) {
       const cell = puzzleContainer.appendChild(document.createElement("div"));
@@ -132,8 +141,55 @@ window.addEventListener("click", (e) => {
 });
 
 function genRandomBoard() {
-  const ranInt = Math.floor(Math.random()) * 10;
-  for (let i = 0; i <= 9; i++) {
-    for (let j = 0; j <= 9; j++) {}
+  newNewBoard = cloneBoard(blankBoard);
+
+  // Seed with 11 random, valid numbers to guarantee variety and a high solvability rate
+  let placed = 0;
+  while (placed < 25) {
+    const row = Math.floor(Math.random() * 9);
+    const col = Math.floor(Math.random() * 9);
+    const val = Math.floor(Math.random() * 9) + 1;
+
+    if (newNewBoard[row][col] === ".") {
+      if (checkGuess(newNewBoard, row, col, val)) {
+        newNewBoard[row][col] = `${val}`;
+        placed++;
+      }
+    }
+  }
+
+  console.log(newNewBoard);
+  if (puzzleSolver(newNewBoard)) {
+    console.log("solvable");
+    return true;
+  } else {
+    console.log("trying again");
+    return genRandomBoard();
   }
 }
+
+function setNewBoard() {
+  errorCount = 0;
+  errorText.innerText = "Error Count: " + errorCount;
+
+  genRandomBoard();
+
+  // Save the fully solved board to solvedBoard before digging holes
+  solvedBoard = cloneBoard(newNewBoard);
+
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      const fiftyFifty = Math.floor(Math.random() * 2);
+      if (fiftyFifty === 1) {
+        newNewBoard[i][j] = ".";
+      }
+    }
+  }
+  setBoard(newNewBoard);
+}
+
+newPuzzleBtn.addEventListener("click", setNewBoard);
+
+solvePuzzleBtn.addEventListener("click", () => {
+  setBoard(solvedBoard);
+});
