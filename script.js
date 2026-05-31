@@ -114,11 +114,18 @@ function compareToSolution() {
   }
 }
 
-function compareBoards(arr1, arr2) {
-  return (
-    arr1.length === arr2.length &&
-    arr1.every((val, index) => val === arr2[index])
-  );
+function compareBoards(arrA, arrB) {
+  if (arrA.length !== arrB.length) {
+    return false;
+  }
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      if (arrA[i][j] !== arrB[i][j]) {
+        return false;
+      }
+    }
+  }
+  return true;
 }
 
 function compareGuess(e) {
@@ -145,7 +152,9 @@ window.addEventListener("click", (e) => {
     const selectedNumberBox = document.querySelector(".selected");
     const selectedNumber = selectedNumberBox.getAttribute("id");
     e.target.innerText = selectedNumber;
-    compareGuess(e);
+    if (!compareBoards(solvedBoard, blankBoard)) {
+      compareGuess(e);
+    }
   }
 });
 
@@ -204,5 +213,4 @@ solvePuzzleBtn.addEventListener("click", () => {
 clearBoardBtn.addEventListener("click", () => {
   setBoard(blankBoard);
   solvedBoard = cloneBoard(blankBoard);
-  console.log(compareBoards(blankBoard, solvedBoard));
 });
