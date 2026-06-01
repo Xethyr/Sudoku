@@ -192,23 +192,33 @@ function setNewBoard() {
   setBoard(newNewBoard);
 }
 
+function solveUserBoard() {
+  let userBoard = cloneBoard(blankBoard);
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      if (document.getElementById(`${i}-${j}`).innerText === "") {
+        userBoard[i][j] = ".";
+      } else {
+        userBoard[i][j] = document.getElementById(`${i}-${j}`).innerText;
+      }
+    }
+  }
+  console.log(userBoard);
+  puzzleSolver(userBoard);
+  setBoard(userBoard);
+}
+
 newPuzzleBtn.addEventListener("click", setNewBoard);
 
 solvePuzzleBtn.addEventListener("click", () => {
-  setBoard(solvedBoard);
+  if (compareBoards(solvedBoard, blankBoard)) {
+    solveUserBoard();
+  } else {
+    setBoard(solvedBoard);
+  }
 });
 
 clearBoardBtn.addEventListener("click", () => {
   setBoard(blankBoard);
   solvedBoard = cloneBoard(blankBoard);
 });
-
-function solveUserBoard() {
-  let userBoard = cloneBoard(blankBoard);
-  for (let i = 0; i < 9; i++) {
-    for (let j = 0; j < 9; j++) {
-      userBoard[i][j] = document.getElementById(`${i}-${j}`).innerText;
-    }
-  }
-  return userBoard;
-}
