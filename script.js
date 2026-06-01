@@ -99,7 +99,7 @@ function setBoard(board) {
   }
 }
 
-setBoard(newBoard);
+// setBoard(newBoard);
 puzzleSolver(solvedBoard);
 
 function compareBoards(arrA, arrB) {
@@ -192,6 +192,8 @@ function setNewBoard() {
   setBoard(newNewBoard);
 }
 
+setNewBoard();
+
 function solveUserBoard() {
   let userBoard = cloneBoard(blankBoard);
   for (let i = 0; i < 9; i++) {
@@ -219,6 +221,8 @@ solvePuzzleBtn.addEventListener("click", () => {
 });
 
 clearBoardBtn.addEventListener("click", () => {
+  errorCount = 0;
+  errorText.innerText = "Error Count: " + errorCount;
   setBoard(blankBoard);
   solvedBoard = cloneBoard(blankBoard);
 });
